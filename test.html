@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Feed Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .video-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+        img {
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-left: 5px solid #4CAF50;
+        }
+        .error {
+            border-left-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Feed Test</h1>
+    
+    <div class="controls">
+        <button id="startBtn">Start Camera</button>
+        <button id="stopBtn">Stop Camera</button>
+        <button id="healthBtn">Check Health</button>
+    </div>
+    
+    <div class="status" id="status">Status: Ready</div>
+    
+    <div class="video-container">
+        <img id="videoFeed" src="" alt="Video feed will appear here">
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:5001';
+        const videoFeed = document.getElementById('videoFeed');
+        const status = document.getElementById('status');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const healthBtn = document.getElementById('healthBtn');
+        
+        startBtn.addEventListener('click', async () => {
+            try {
+                status.textContent = 'Starting camera...';
+                status.className = 'status';
+                
+                const response = await fetch(`${API_URL}/start_camera`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    status.textContent = `Success: ${data.message}`;
+                    // Add timestamp to prevent caching
+                    videoFeed.src = `${API_URL}/video_feed?t=${new Date().getTime()}`;
+                } else {
+                    throw new Error(data.message || 'Failed to start camera');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                status.textContent = `Error: ${error.message}`;
+                status.className = 'status error';
+            }
+        });
+        
+        stopBtn.addEventListener('click', async () => {
+            try {
+                status.textContent = 'Stopping camera...';
+                status.className = 'status';
+                
+                const response = await fetch(`${API_URL}/stop_camera`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    status.textContent = `Success: ${data.message}`;
+                    videoFeed.src = '';
+                } else {
+                    throw new Error(data.message || 'Failed to stop camera');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                status.textContent = `Error: ${error.message}`;
+                status.className = 'status error';
+            }
+        });
+        
+        healthBtn.addEventListener('click', async () => {
+            try {
+                status.textContent = 'Checking health...';
+                status.className = 'status';
+                
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    status.textContent = `Health: ${JSON.stringify(data, null, 2)}`;
+                } else {
+                    throw new Error(data.message || 'Health check failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                status.textContent = `Error: ${error.message}`;
+                status.className = 'status error';
+            }
+        });
+        
+        // Check health on page load
+        healthBtn.click();
+    </script>
+</body>
+</html>

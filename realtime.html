@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Detection - Violence Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">Vison Guard</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="upload.html">Upload Video</a>
+                <a href="realtime.html">Real-time Detection</a>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="content-container">
+            <div class="glass-card">
+                <h2>Real-time Violence Detection</h2>
+                <div class="camera-feed-container">
+                    <img id="videoFeed" src="" alt="Camera feed">
+                </div>
+                <div class="controls">
+                    <button id="startCameraBtn" class="control-btn">
+                        <i class="fas fa-video"></i> Start Camera
+                    </button>
+                    <button id="stopCameraBtn" class="control-btn" style="display: none;">
+                        <i class="fas fa-video-slash"></i> Stop Camera
+                    </button>
+                    <button id="recordBtn" class="control-btn" style="display: none;">
+                        <i class="fas fa-record-vinyl"></i> Start Recording
+                    </button>
+                </div>
+                <div id="status" class="status-message"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/realtime.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user) {
+                // If not logged in, redirect to login page
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+
+</html>

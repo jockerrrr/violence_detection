@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vision Guard - AI Violence Detection System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shield-alt"></i> Vision Guard
+            </a>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="upload.html">Upload Video</a>
+                <a href="realtime.html">Real-time Detection</a>
+                <span class="user-greeting">Welcome, <span id="userName">User</span>!</span>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Add this script before the closing body tag -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            // Toggle menu when clicking the hamburger button
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking anywhere outside
+            document.addEventListener('click', (e) => {
+                const isClickInsideNav = e.target.closest('.nav');
+                if (!isClickInsideNav && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Prevent menu from closing when clicking inside nav-links
+            navLinks.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            // Close menu when window is resized above mobile breakpoint
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Close menu when clicking a nav link
+            const navLinksItems = navLinks.querySelectorAll('a');
+            navLinksItems.forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+        });
+    </script>
+
+    <main>
+        <section class="hero-section fullscreen">
+            <div class="hero-content">
+                <h1 class="animate-text">Vision Guard</h1>
+                <p class="hero-subtitle animate-text">Advanced AI-Powered Violence Detection System</p>
+                <div class="hero-description animate-text">
+                    <p>Protecting communities through real-time violence detection and prevention using cutting-edge AI
+                        technology.</p>
+                </div>
+                <div class="hero-cta animate-text">
+                    <a href="realtime.html" class="btn btn-primary pulse">
+                        <i class="fas fa-camera"></i> Start Detection
+                    </a>
+                    <a href="upload.html" class="btn btn-secondary glow">
+                        <i class="fas fa-upload"></i> Upload Video
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="features-section">
+            <div class="section-header">
+                <h2>Why Choose Vision Guard?</h2>
+                <p class="section-subtitle">Leading the way in AI-powered security solutions</p>
+            </div>
+            <div class="why-choose-container">
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="why-choose-content">
+                        <h3>Advanced AI Technology</h3>
+                        <p>Utilizing cutting-edge artificial intelligence and machine learning algorithms for precise
+                            violence detection.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="why-choose-content">
+                        <h3>Real-Time Performance</h3>
+                        <p>Lightning-fast detection and instant alerts ensure immediate response to potential security
+                            threats.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="why-choose-content">
+                        <h3>Reliable Security</h3>
+                        <p>99.9% accuracy rate in detecting violent behavior, minimizing false alarms while maximizing
+                            protection.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="why-choose-content">
+                        <h3>Community Focus</h3>
+                        <p>Designed with community safety in mind, helping create safer environments for everyone.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="why-choose-content">
+                        <h3>24/7 Monitoring</h3>
+                        <p>Continuous surveillance and protection around the clock, ensuring no security breach goes
+                            unnoticed.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="why-choose-content">
+                        <h3>Analytics & Insights</h3>
+                        <p>Detailed reporting and analytics to help optimize security measures and prevent future
+                            incidents.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="action-section">
+            <div class="action-container">
+                <a href="realtime.html" class="action-card">
+                    <i class="fas fa-camera"></i>
+                    <h3>Real-time Detection</h3>
+                    <p>Start live monitoring with our advanced AI system</p>
+                    <button class="btn btn-primary">Launch Camera</button>
+                </a>
+
+                <a href="upload.html" class="action-card">
+                    <i class="fas fa-upload"></i>
+                    <h3>Upload Video</h3>
+                    <p>Analyze pre-recorded footage for security threats</p>
+                    <button class="btn btn-primary">Upload Now</button>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/animations.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user) {
+                // If not logged in, redirect to login page
+                window.location.href = 'login.html';
+            } else {
+                // If logged in, display user name if element exists
+                const userNameElement = document.getElementById('userName');
+                if (userNameElement) {
+                    userNameElement.textContent = user.fullName;
+                }
+
+                // Add event listeners to the upload buttons
+                const uploadButtons = document.querySelectorAll('a[href="upload.html"]');
+                uploadButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        // No need to prevent default, we want to navigate to upload.html
+                        // Just log for debugging
+                        console.log('Navigating to upload page');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+<!-- Add this before closing body tag -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Vision Guard</h3>
+            <p>Pioneering AI-powered violence detection system protecting communities worldwide. Making spaces safer
+                through innovative technology.</p>
+            <div class="footer-social">
+                <a href="#" class="social-icon" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <div class="footer-links">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="upload.html"><i class="fas fa-upload"></i> Upload Video</a>
+                <a href="realtime.html"><i class="fas fa-camera"></i> Real-time Detection</a>
+                <a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h3>Resources</h3>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-book"></i> Documentation</a>
+                <a href="#"><i class="fas fa-question-circle"></i> FAQ</a>
+                <a href="#"><i class="fas fa-newspaper"></i> Blog</a>
+                <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h3>Contact Us</h3>
+            <div class="footer-links">
+                <a href="mailto:support@visionguard.com">
+                    <i class="fas fa-envelope"></i> support@visionguard.com
+                </a>
+                <a href="tel:+021005678900">
+                    <i class="fas fa-phone"></i> +02 100 567 8900
+                </a>
+                <a href="#">
+                    <i class="fas fa-map-marker-alt"></i> Cairo, Egypt
+                </a>
+                <a href="#">
+                    <i class="fas fa-clock"></i> 24/7 Support
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2024 Vision Guard. All rights reserved. | Powered by Advanced AI Technology</p>
+    </div>
+</footer>

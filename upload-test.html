@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .upload-form {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .progress {
+            height: 20px;
+            background-color: #f0f0f0;
+            margin: 20px 0;
+            display: none;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-left: 5px solid #4CAF50;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .error {
+            border-left-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload Test</h1>
+    
+    <div class="upload-form">
+        <h2>Upload Video</h2>
+        <input type="file" id="fileInput" accept="video/*">
+        <button id="uploadBtn">Upload</button>
+    </div>
+    
+    <div class="progress" id="progress">
+        <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+    
+    <div class="result" id="result">Select a file and click Upload</div>
+    
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
+        const result = document.getElementById('result');
+        
+        uploadBtn.addEventListener('click', async () => {
+            const file = fileInput.files[0];
+            if (!file) {
+                result.textContent = 'Please select a file first';
+                result.className = 'result error';
+                return;
+            }
+            
+            // Show progress
+            progress.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            result.textContent = 'Uploading...';
+            result.className = 'result';
+            
+            // Create FormData
+            const formData = new FormData();
+            formData.append('video', file);
+            
+            try {
+                // Use XMLHttpRequest for progress tracking
+                const xhr = new XMLHttpRequest();
+                
+                // Setup progress tracking
+                xhr.upload.addEventListener('progress', (event) => {
+                    if (event.lengthComputable) {
+                        const percentComplete = Math.round((event.loaded / event.total) * 100);
+                        progressBar.style.width = percentComplete + '%';
+                        progressBar.textContent = percentComplete + '%';
+                    }
+                });
+                
+                // Setup completion handler
+                xhr.addEventListener('load', () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            result.textContent = 'Upload successful!\n\nResponse:\n' + JSON.stringify(response, null, 2);
+                            result.className = 'result';
+                        } catch (e) {
+                            result.textContent = 'Upload successful but received invalid JSON response:\n' + xhr.responseText;
+                            result.className = 'result';
+                        }
+                    } else {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            result.textContent = 'Upload failed!\n\nError:\n' + JSON.stringify(response, null, 2);
+                        } catch (e) {
+                            result.textContent = 'Upload failed with status ' + xhr.status + ':\n' + xhr.responseText;
+                        }
+                        result.className = 'result error';
+                    }
+                });
+                
+                // Setup error handler
+                xhr.addEventListener('error', () => {
+                    result.textContent = 'Network error occurred during upload';
+                    result.className = 'result error';
+                });
+                
+                // Setup timeout handler
+                xhr.addEventListener('timeout', () => {
+                    result.textContent = 'Upload timed out';
+                    result.className = 'result error';
+                });
+                
+                // Open and send the request
+                xhr.open('POST', 'http://localhost:5001/upload', true);
+                xhr.timeout = 300000; // 5 minutes
+                xhr.send(formData);
+                
+            } catch (error) {
+                result.textContent = 'Error: ' + error.message;
+                result.className = 'result error';
+            }
+        });
+    </script>
+</body>
+</html>

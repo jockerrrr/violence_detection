@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Upload Video - Vision Guard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="upload-page">
+    <header class="header glass">
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shield-alt"></i> Vision Guard
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="upload.html" class="active">Upload Video</a>
+                <a href="realtime.html">Real-time Detection</a>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="content-container">
+            <div class="glass-card">
+                <h2>Upload Video for Analysis</h2>
+                <p id="welcomeMessage" class="welcome-message"></p>
+                <div class="upload-area" id="dropZone">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p class="upload-text">Drag and drop your video here or click to browse</p>
+                    <p class="upload-format">Supported formats: MP4, AVI, MOV</p>
+                    <input type="file" id="fileInput" accept="video/*" style="display: none;">
+                </div>
+
+                <div id="uploadProgress" class="progress-container" style="display: none;">
+                    <div class="progress-info">
+                        <span class="filename">Uploading: video.mp4</span>
+                        <span class="percentage" id="progressText">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="video-container" style="display: none;">
+                    <!-- This will be populated by JavaScript when a video is processed -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/upload.js"></script>
+    <script>
+        // Check if user is logged in and enforce the flow
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user) {
+                // If not logged in, redirect to login page
+                window.location.href = 'login.html';
+            } else {
+                // Display welcome message
+                const welcomeMessage = document.getElementById('welcomeMessage');
+                if (welcomeMessage) {
+                    welcomeMessage.textContent = `Welcome, ${user.fullName}! Upload a video for violence detection analysis.`;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
